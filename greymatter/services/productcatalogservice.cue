@@ -1,0 +1,68 @@
+package online_boutique
+
+import (
+	gsl "greymatter.io/gsl/spec/v1"
+	"online-boutique.module/greymatter:globals"
+)
+
+productcatalogservice: gsl.#Service & {
+	context: productcatalogservice.#NewContext & globals
+
+	name:            "productcatalogservice"
+	display_name:    "Online Boutique Productcatalogservice"
+	version:         "v1.0.0"
+	description:     "No description"
+	business_impact: "low"
+	owner:           "online-boutique"
+	capability:      ""
+	api_endpoint:    ""
+
+	resources: gsl.#ResourceQuotas & {
+		requests: {
+			cpu:    "100m"
+			memory: "128Mi"
+		}
+		limits: {
+			cpu:    "200m"
+			memory: "200Mi"
+		}
+	}
+
+	ingress: {
+		"productcatalogservice": {
+			gsl.#HTTPListener
+			gsl.#HTTP2Listener
+			gsl.#SpireListener & {
+				#context: context.SpireContext
+				#subjects: ["online-boutique-checkoutservice", "online-boutique-frontend", "online-boutique-recommendationservice"]
+			}
+
+			routes: {
+				"/": {
+					upstreams: {
+						"127.0.0.1:3550": {
+							gsl.#Upstream
+							gsl.#HTTP2Upstream
+
+							instances: [
+								{
+									host: "127.0.0.1"
+									port: 3550
+								},
+							]
+						}
+					}
+				}
+			}
+		}
+
+		"service-info": gsl.#ServiceInfo & {
+			gsl.#SpireListener & {
+				#context: context.SpireContext
+				#subjects: ["prometheus"]
+			}
+		}
+	}
+}
+
+exports: "productcatalogservice": productcatalogservice
