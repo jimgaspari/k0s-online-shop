@@ -55,7 +55,31 @@ paymentservice: gsl.#Service & {
 				}
 			}
 		}
+		"health-probes": {
+			gsl.#HTTPListener
+			port:10911
+			// Mark the listener to remap container probes
+			health_probes: {
+				readiness: gsl.#ContainerProbe
+				liveness:  gsl.#ContainerProbe
+			}
 
+			routes: {
+				"/": {
+					upstreams: {
+						"health-probes": {
+							gsl.#Upstream
+							instances: [
+								{
+									host: "127.0.0.1"
+									port: 50051
+								},
+							]
+						}
+					}
+				}
+			}
+		}
 		"service-info": gsl.#ServiceInfo & {
 			gsl.#SpireListener & {
 				#context: context.SpireContext

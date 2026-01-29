@@ -53,15 +53,7 @@ frontend: gsl.#Service & {
 				}
 			}
 		}
-
-		"service-info": gsl.#ServiceInfo & {
-			gsl.#SpireListener & {
-				#context: context.SpireContext
-				#subjects: ["prometheus"]
-			}
-		}
-	}
-		"health-probes": {
+"health-probes": {
 			gsl.#HTTPListener
 			port:10911
 			// Mark the listener to remap container probes
@@ -86,6 +78,14 @@ frontend: gsl.#Service & {
 				}
 			}
 		}
+		"service-info": gsl.#ServiceInfo & {
+			gsl.#SpireListener & {
+				#context: context.SpireContext
+				#subjects: ["prometheus"]
+			}
+		}
+	}
+		
 	edge: {
 		edge_name: "edge"
 		routes: {
