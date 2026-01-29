@@ -53,7 +53,7 @@ frontend: gsl.#Service & {
 				}
 			}
 		}
-"health-probes": {
+		"health-probes": {
 			gsl.#HTTPListener
 			port:10911
 			// Mark the listener to remap container probes

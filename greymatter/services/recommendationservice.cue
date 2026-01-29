@@ -55,7 +55,33 @@ recommendationservice: gsl.#Service & {
 				}
 			}
 		}
+		"health-probes": {
+			gsl.#HTTPListener
+			gsl.#GRPCListener
+			port:10911
+			// Mark the listener to remap container probes
+			health_probes: {
+				readiness: gsl.#ContainerProbe
+				liveness:  gsl.#ContainerProbe
+			}
 
+			routes: {
+				"/": {
+					upstreams: {
+						"health-probes": {
+							gsl.#Upstream
+							gsl.#GRPCUpstream
+							instances: [
+								{
+									host: "127.0.0.1"
+									port: 8080
+								},
+							]
+						}
+					}
+				}
+			}
+		}
 		"service-info": gsl.#ServiceInfo & {
 			gsl.#SpireListener & {
 				#context: context.SpireContext

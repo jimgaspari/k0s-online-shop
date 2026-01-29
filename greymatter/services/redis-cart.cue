@@ -49,7 +49,26 @@ redis_cart: gsl.#Service & {
 				]
 			}
 		}
+		"redis-cart": {
+			gsl.#TCPListener
+			port: 10911
+			health_probes: {
+				readiness: gsl.#ContainerProbe
+				liveness:  gsl.#ContainerProbe
+			}
+			upstream: {
+				gsl.#Upstream
 
+				name: "127.0.0.1:6379"
+
+				instances: [
+					{
+						host: "127.0.0.1"
+						port: 6379
+					},
+				]
+			}
+		}
 		"service-info": gsl.#ServiceInfo & {
 			gsl.#SpireListener & {
 				#context: context.SpireContext
