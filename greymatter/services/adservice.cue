@@ -58,7 +58,7 @@ adservice: gsl.#Service & {
 		"health-probes": {
 			gsl.#HTTPListener
 			gsl.#GRPCListener
-
+			port:10911
 			// Mark the listener to remap container probes
 			health_probes: {
 				readiness: gsl.#ContainerProbe
