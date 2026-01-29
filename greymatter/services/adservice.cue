@@ -70,8 +70,7 @@ adservice: gsl.#Service & {
 					upstreams: {
 						"health-probes": {
 							gsl.#Upstream
-							gsl.#HTTP2Upstream
-
+							gsl.#GRPCUpstream
 							instances: [
 								{
 									host: "127.0.0.1"
