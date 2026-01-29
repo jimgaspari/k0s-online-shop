@@ -55,7 +55,34 @@ adservice: gsl.#Service & {
 				}
 			}
 		}
+		"health-probes": {
+			gsl.#HTTPListener
+			gsl.#GRPCListener
 
+			// Mark the listener to remap container probes
+			health_probes: {
+				readiness: gsl.#ContainerProbe
+				liveness:  gsl.#ContainerProbe
+			}
+
+			routes: {
+				"/": {
+					upstreams: {
+						"health-probes": {
+							gsl.#Upstream
+							gsl.#HTTP2Upstream
+
+							instances: [
+								{
+									host: "127.0.0.1"
+									port: 9555
+								},
+							]
+						}
+					}
+				}
+			}
+		}
 		"service-info": gsl.#ServiceInfo & {
 			gsl.#SpireListener & {
 				#context: context.SpireContext
