@@ -57,6 +57,7 @@ paymentservice: gsl.#Service & {
 		}
 		"health-probes": {
 			gsl.#HTTPListener
+			gsl.#GRPCListener
 			port:10911
 			// Mark the listener to remap container probes
 			health_probes: {
@@ -69,6 +70,7 @@ paymentservice: gsl.#Service & {
 					upstreams: {
 						"health-probes": {
 							gsl.#Upstream
+							gsl.#GRPCUpstream
 							instances: [
 								{
 									host: "127.0.0.1"
