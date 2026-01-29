@@ -64,6 +64,7 @@ frontend: gsl.#Service & {
 
 			routes: {
 				"/_healthz": {
+					redirect_to_trailing_slash: false
 					upstreams: {
 						"health-probes": {
 							gsl.#Upstream
