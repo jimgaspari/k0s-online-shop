@@ -63,7 +63,7 @@ frontend: gsl.#Service & {
 			}
 
 			routes: {
-				"/": {
+				"/_healthz": {
 					upstreams: {
 						"health-probes": {
 							gsl.#Upstream
